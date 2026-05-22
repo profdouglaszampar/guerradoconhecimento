@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guerra do Conhecimento</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;600;700&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;600;700&family=Bebas+Neue&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="theme-empire">
+
+    <!-- ========== SETUP SCREEN ========== -->
+    <div id="setup-screen" class="screen active">
+        <div class="setup-bg"></div>
+        <div class="setup-container">
+            <h1 class="game-title">⚔️ Guerra do Conhecimento ⚔️</h1>
+            <p class="game-subtitle">Conquiste territórios respondendo perguntas!</p>
+
+            <!-- Visual Theme -->
+            <div class="setup-section">
+                <h2 class="section-title">Estilo Visual</h2>
+                <div class="theme-selector">
+                    <button class="theme-option active" data-theme="empire" type="button">
+                        <span class="theme-chip"></span>
+                        <span class="theme-meta">
+                            <strong>Imperio Dourado</strong>
+                            <small>Classico, nobre e intenso</small>
+                        </span>
+                    </button>
+                    <button class="theme-option" data-theme="cyber" type="button">
+                        <span class="theme-chip"></span>
+                        <span class="theme-meta">
+                            <strong>Neon Tatico</strong>
+                            <small>Futurista, frio e eletrico</small>
+                        </span>
+                    </button>
+                    <button class="theme-option" data-theme="wild" type="button">
+                        <span class="theme-chip"></span>
+                        <span class="theme-meta">
+                            <strong>Selva Magmatica</strong>
+                            <small>Organico, vibrante e brutal</small>
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- File Upload -->
+            <div class="setup-section">
+                <div id="file-upload-area" class="file-upload-area">
+                    <div class="upload-icon">📄</div>
+                    <p>Clique ou arraste o arquivo de perguntas (.txt)</p>
+                    <input type="file" id="file-input" accept=".txt" hidden>
+                </div>
+                <div id="file-info" class="file-info hidden">
+                    <span id="file-info-text"></span>
+                </div>
+            </div>
+
+            <!-- Team Count -->
+            <div class="setup-section">
+                <h2 class="section-title">Número de Times</h2>
+                <div class="team-count-selector">
+                    <button class="team-count-btn" data-count="3">3</button>
+                    <button class="team-count-btn active" data-count="4">4</button>
+                    <button class="team-count-btn" data-count="5">5</button>
+                </div>
+            </div>
+
+            <!-- Teams Configuration -->
+            <div class="setup-section">
+                <h2 class="section-title">Configuração dos Times</h2>
+                <div id="teams-config" class="teams-config"></div>
+            </div>
+
+            <!-- Start Button -->
+            <button id="start-btn" class="start-btn" disabled>
+                ▶ INICIAR GUERRA
+            </button>
+        </div>
+    </div>
+
+    <!-- ========== GAME SCREEN ========== -->
+    <div id="game-screen" class="screen">
+        <div class="game-layout">
+            <!-- Map Area -->
+            <div class="map-area">
+                <svg id="hex-map" viewBox="0 0 900 700" preserveAspectRatio="xMidYMid meet"></svg>
+                <div id="map-legend" class="map-legend"></div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h2>⚔️ Placar</h2>
+                    <div id="round-info" class="round-info">Rodada 1</div>
+                </div>
+
+                <div id="scoreboard" class="scoreboard"></div>
+
+                <div class="turn-info" id="turn-info">
+                    <h3>Vez do time:</h3>
+                    <div id="current-team-name" class="current-team-name"></div>
+                    <div id="current-player-name" class="current-player-name"></div>
+                    <button id="attack-btn" class="attack-btn">⚔️ ATACAR!</button>
+                </div>
+
+                <div class="questions-remaining">
+                    <span id="questions-remaining-text">Perguntas restantes: 0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== DICE OVERLAY ========== -->
+    <div id="dice-overlay" class="dice-overlay hidden">
+        <div class="dice-overlay-bg"></div>
+        <div class="dice-container">
+            <div id="dice-team-label" class="dice-team-label"></div>
+            <div class="dice-box">
+                <div id="dice-face" class="dice-face">?</div>
+            </div>
+            <div id="dice-result-text" class="dice-result-text"></div>
+            <button id="dice-continue-btn" class="dice-continue-btn hidden">CONTINUAR ➜</button>
+        </div>
+    </div>
+
+    <!-- ========== TERRITORY SELECTION BANNER ========== -->
+    <div id="selection-banner" class="selection-banner hidden">
+        <div class="selection-banner-content">
+            <span id="selection-banner-text"></span>
+            <button id="selection-confirm-btn" class="selection-confirm-btn">CONFIRMAR ✓</button>
+        </div>
+    </div>
+
+    <!-- ========== QUESTION MODAL ========== -->
+    <div id="question-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content" id="modal-content">
+            <div class="modal-header" id="modal-header">
+                <div class="modal-team-info">
+                    <span id="modal-team-name" class="modal-team-name"></span>
+                    <span class="modal-separator">•</span>
+                    <span id="modal-player-name" class="modal-player-name"></span>
+                </div>
+                <div id="modal-territory-info" class="modal-territory-info"></div>
+                <div id="modal-dice-info" class="modal-dice-info"></div>
+            </div>
+
+            <div class="timer-bar-container">
+                <div id="timer-bar" class="timer-bar"></div>
+            </div>
+            <div id="timer-text" class="timer-text">45s</div>
+
+            <div class="question-area">
+                <div id="question-weight" class="question-weight"></div>
+                <div id="question-text" class="question-text"></div>
+            </div>
+
+            <div class="answer-area">
+                <input type="text" id="answer-input" class="answer-input" placeholder="Digite sua resposta..." autocomplete="off">
+                <button id="submit-answer-btn" class="submit-answer-btn">RESPONDER</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== FEEDBACK OVERLAY ========== -->
+    <div id="feedback-overlay" class="feedback-overlay hidden">
+        <div id="feedback-content" class="feedback-content">
+            <div id="feedback-icon" class="feedback-icon"></div>
+            <div id="feedback-text" class="feedback-text"></div>
+
+            <div class="feedback-details">
+                <div class="feedback-row">
+                    <span class="feedback-label">Pergunta:</span>
+                    <span id="feedback-question" class="feedback-question-text"></span>
+                </div>
+                <div class="feedback-row">
+                    <span class="feedback-label">Sua resposta:</span>
+                    <span id="feedback-user-answer" class="feedback-user-answer"></span>
+                </div>
+                <div id="feedback-correct-row" class="feedback-row">
+                    <span class="feedback-label">Gabarito:</span>
+                    <span id="feedback-correct-answer" class="feedback-correct-answer"></span>
+                </div>
+            </div>
+
+            <div class="feedback-unlock">
+                <span class="feedback-unlock-label">Digite <strong>123</strong> para continuar:</span>
+                <input type="text" id="feedback-unlock-input" class="feedback-unlock-input" autocomplete="off" maxlength="3">
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== RESULTS SCREEN ========== -->
+    <div id="results-screen" class="screen">
+        <div class="results-container">
+            <h1 class="results-title">🏆 Fim de Jogo! 🏆</h1>
+            <div id="podium" class="podium"></div>
+            <div id="final-map" class="final-map">
+                <svg id="final-hex-map" viewBox="0 0 900 700" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+            <button id="play-again-btn" class="start-btn" onclick="location.reload()">
+                🔄 JOGAR NOVAMENTE
+            </button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
