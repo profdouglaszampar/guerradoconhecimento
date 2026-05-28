@@ -102,8 +102,23 @@ html, body {
     text-align: center;
     color: var(--text-secondary);
     font-size: 1.1rem;
-    margin-bottom: 30px;
+    margin-bottom: 12px;
 }
+
+.publish-status {
+    width: fit-content;
+    margin: 0 auto 30px;
+    padding: 8px 16px;
+    border: 1px solid rgba(255, 215, 0, 0.32);
+    border-radius: 999px;
+    background: rgba(255, 215, 0, 0.09);
+    color: var(--accent-gold);
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-transform: uppercase;
+    box-shadow: 0 0 18px rgba(255, 215, 0, 0.11);}
 
 /* Sections */
 .setup-section {
