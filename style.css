@@ -679,10 +679,11 @@ html, body {
     color: var(--text-primary);
     text-align: center;
     min-height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    column-count: 1;
+    columns: 1;}
 
 .question-gap {
     display: inline-block;
@@ -812,6 +813,11 @@ html, body {
 .feedback-question-text {
     color: var(--text-primary);
     font-size: 1.05rem;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    column-count: 1;
+    columns: 1;
 }
 
 .feedback-user-answer {
